@@ -64,6 +64,14 @@
                 border-style: solid;
             }
         </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+            $("button").click(function(){
+                $(".professional-interests").fadeToggle();
+            });
+        });
+        </script>
     </head>
         
     <body>
@@ -90,6 +98,19 @@
                             <li>Video Games</li>
                             <li>Books</li>
                             <Li>Drawing</Li>
+                        </ul>
+                    </section>
+                </div>
+            </main>
+            <main>
+                <div class="content">
+                    <header>Professional Interests</header>
+                    <section class="interests">
+                        <button>Use me to see my professional interests</button>
+                        <ul class="professional-interests">
+                            <li>The collection of knowledge involving coding and the like</li>
+                            <li>The implamentation of that which I learn to better master said concepts</li>
+                            <li>The securing of a career in such a field</li>
                         </ul>
                     </section>
                 </div>
