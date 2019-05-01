@@ -374,25 +374,36 @@ _.every = function (collection, fn) {
 *   _.some([1,2,3], function(e){return e % 2 === 0}) -> true
 */
 _.some = function (collection, fn) {
-    
+    let falseCounter = 0;
     /** 
     You will need to account for the situation in which fn is not a function
     */
+    
     if (_.typeOf(fn) !== "function") {
         if (Array.isArray(collection)){
             for (let i = 0; i < collection.length; i++) {
-                if (_.typeOf(collection[i]) !== "null" || _.typeOf(collection[i]) !== "NaN" || _.typeOf(collection[i]) !== "undefined") {
-                    return true;
+                if (_.typeOf(collection[i]) === "null" || _.typeOf(collection[i]) === "NaN" || _.typeOf(collection[i]) === "undefined") {
+                    falseCounter++;
                 }   
             }
+            if (falseCounter !== collection.length){
+                return true;
+            }
         } else {
+            
+            if (_.typeOf(collection) === "null" || _.typeOf(collection) === "NaN" || _.typeOf(collection) === "undefined") {
+                    return false;
+                }
+            
             for (let key in collection) {
-                if (_.typeOf(collection[key]) !== "null" || _.typeOf(collection[key]) !== "NaN" || _.typeOf(collection[key]) !== "undefined") {
-                    return true;
+                if (_.typeOf(collection[key]) === "null" || _.typeOf(collection[key]) === "NaN" || _.typeOf(collection[key]) === "undefined") {
+                    falseCounter++;
                 }
             }
+            if (falseCounter !== collection.length){
+                return true;
+            }
         }    
-    return false;
     } else {
         
         if (Array.isArray(collection)){
@@ -409,8 +420,8 @@ _.some = function (collection, fn) {
             }
         }
         return false;
-    };
-}
+    }
+};
 //  _.some = function(obj, fn, collection) {
 //     var keys = _.keys(obj),
 //         length = (keys || obj).length;
@@ -431,7 +442,7 @@ _.some = function (collection, fn) {
 * Examples:
 *   _.pluck([{a: "one"}, {a: "two"}], "a") -> ["one", "two"]
 */
-_.pluck = function(array, property) {
+_.pluck = function(obj, key) {
     
     /** Very close! 
         1) make sure you are mapping <array> which is an Array of Objects
@@ -442,8 +453,32 @@ _.pluck = function(array, property) {
             return obj[property]
     
     */
-    
-    return _.map(obj, function (obj, property) {return obj.property});
+    // it works but what is it?
+    return _.map(obj, _.property(key));
+  };
+
+_.property = function(path) {
+    if (!Array.isArray(path)) {
+      return shallowProperty(path);
+    }
+    return function(obj) {
+      return deepGet(obj, path);
+    };
+  };
+  
+  var shallowProperty = function(key) {
+    return function(obj) {
+      return obj == null ? void 0 : obj[key];
+    };
+  };
+
+var deepGet = function(obj, path) {
+    var length = path.length;
+    for (var i = 0; i < length; i++) {
+      if (obj == null) return void 0;
+      obj = obj[path[i]];
+    }
+    return length ? obj : void 0;
   };
 
 //////////////////////////////////////////////////////////////////////
